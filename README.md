@@ -1,0 +1,2 @@
+# lotteries
+TECHNICAL ASSESMENT - BACKEND DEVELOPER - JUNIOR - Salsa Nadira Putri
