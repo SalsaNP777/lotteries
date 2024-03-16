@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "089d85bb-50fe-49fc-833a-dce579fd825a",
+		"name": "Lottery",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32936354"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"salsa\",\r\n    \"email\":\"salsa@email.com\",\r\n    \"address\":\"bogor\",\r\n    \"phoneNumber\":\"081234567890\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/user"
+					},
+					"response": []
+				},
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "lottery",
+			"item": [
+				{
+					"name": "create lottery",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"lottery1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/lottery"
+					},
+					"response": []
+				},
+				{
+					"name": "get all lotteries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/lottery"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "Transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lotteryId\" : \"505dcd12-a8d3-4aa7-93fe-5a1e39ebdedb\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/transaction"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get all transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/transaction"
+			},
+			"response": []
+		}
+	]
+}
