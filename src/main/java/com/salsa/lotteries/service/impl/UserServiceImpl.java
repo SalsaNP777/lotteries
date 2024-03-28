@@ -5,6 +5,7 @@ import com.salsa.lotteries.dto.request.user.UserCreateRequest;
 import com.salsa.lotteries.dto.request.user.UserSearchRequest;
 import com.salsa.lotteries.dto.response.ControllerResponse;
 import com.salsa.lotteries.dto.response.PageResponseWrapper;
+import com.salsa.lotteries.dto.response.lottery.LotteryResponse;
 import com.salsa.lotteries.entity.User;
 import com.salsa.lotteries.repository.UserRepository;
 import com.salsa.lotteries.service.UserService;
@@ -21,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,18 +58,16 @@ public class UserServiceImpl implements UserService {
     public ControllerResponse<?> getAllUserWithPage(Pageable pageable, UserSearchRequest request) {
         Specification<User> specification = UserSpecification.getSpecification(request);
         Page<User> page = userRepository.findAll(specification, pageable);
-        List<UserResponse> userResponseList = new ArrayList<>();
 
-        for (User user : page){
-            UserResponse response = UserResponse.builder()
-                    .id(user.getId())
-                    .address(user.getUserAddress())
-                    .email(user.getUserEmail())
-                    .name(user.getUserName())
-                    .phoneNumber(user.getPhoneNumber())
-                    .build();
-            userResponseList.add(response);
-        }
+        List<UserResponse> userResponseList = page.stream()
+                .map(user -> UserResponse.builder()
+                        .id(user.getId())
+                        .address(user.getUserAddress())
+                        .email(user.getUserEmail())
+                        .name(user.getUserName())
+                        .phoneNumber(user.getPhoneNumber())
+                        .build())
+                .collect(Collectors.toList());
 
         PageResponseWrapper pageResponseWrapper = PageResponseWrapper.builder()
                 .data(userResponseList)

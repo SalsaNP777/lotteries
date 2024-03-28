@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,15 +53,13 @@ public class LotteryServiceImpl implements LotteryService {
     public ControllerResponse<?> getAllLotteryWithPage(Pageable pageable, LotteryRequest request) {
         Specification<Lottery> specification = LotterySpecification.getSpecification(request);
         Page<Lottery> page = lotteryRepository.findAll(specification, pageable);
-        List<LotteryResponse> lotteryResponseList = new ArrayList<>();
 
-        for (Lottery lottery : page){
-            LotteryResponse response = LotteryResponse.builder()
-                    .id(lottery.getId())
-                    .name(lottery.getLotteryName())
-                    .build();
-            lotteryResponseList.add(response);
-        }
+        List<LotteryResponse> lotteryResponseList = page.stream()
+                .map(lottery -> LotteryResponse.builder()
+                        .id(lottery.getId())
+                        .name(lottery.getLotteryName())
+                        .build())
+                .collect(Collectors.toList());
 
         PageResponseWrapper pageResponseWrapper = PageResponseWrapper.builder()
                 .data(lotteryResponseList)

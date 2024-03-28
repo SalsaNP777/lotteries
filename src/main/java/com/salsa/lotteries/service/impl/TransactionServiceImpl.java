@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,16 +71,14 @@ public class TransactionServiceImpl implements TransactionService {
     public ControllerResponse<?> getAllTransactionWithPage(Pageable pageable, TransactionSearchRequest request) {
         Specification<Transaction> specification = TransactionSpecification.getSpecification(request);
         Page<Transaction> page = transactionRepository.findAll(specification, pageable);
-        List<TransactionResponse> transactionResponseList = new ArrayList<>();
 
-        for (Transaction transaction : page){
-            TransactionResponse response = TransactionResponse.builder()
-                    .id(transaction.getId())
-                    .user(transaction.getUser().getId()) //must be list (RAND)
-                    .lottery(transaction.getLottery().getId()) //must be list
-                    .build();
-            transactionResponseList.add(response);
-        }
+        List<TransactionResponse> transactionResponseList = page.stream()
+                .map(transaction -> TransactionResponse.builder()
+                        .id(transaction.getId())
+                        .user(transaction.getUser().getUserName())
+                        .lottery(transaction.getLottery().getId())
+                        .build())
+                .collect(Collectors.toList());
 
         PageResponseWrapper pageResponseWrapper = PageResponseWrapper.builder()
                 .data(transactionResponseList)
